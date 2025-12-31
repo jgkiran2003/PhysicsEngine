@@ -1,6 +1,6 @@
-#include <iostream>
 #include <SDL2/SDL.h>
 #include "PhysicsObject.h"
+#include "PhysicsEngine.h"
 
 int main(int argc, char* argv[]) {
   // Setup SDL
@@ -8,11 +8,14 @@ int main(int argc, char* argv[]) {
   SDL_Window* window = SDL_CreateWindow("Physics Visualizer", 100, 100, 800, 600, 0);
   SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 
-  // Setup Physics
-  Vector2 startPos(0.0f, 0.0f);
-  Vector2 startVel(10.0f, 10.0f);
-  PhysicsObject ball(startPos, startVel);
+  // Setup Physics Engine
+  PhysicsEngine engine;
+  
   float timeStep = 1.0f;
+
+  // Create a ball
+  PhysicsObject* ball = new PhysicsObject(Vector2(200, 100), Vector2(0.1, 0));
+  engine.AddObject(ball);
 
   bool running = true;
   SDL_Event event;
@@ -23,8 +26,8 @@ int main(int argc, char* argv[]) {
         if (event.type == SDL_QUIT) running = false;
     }
 
-    // --- CORE LOGIC ---
-    ball.integrate(timeStep);
+    // Update physics
+    engine.Simulate(timeStep);
 
     // Clear the screen to black
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
@@ -32,7 +35,8 @@ int main(int argc, char* argv[]) {
 
     // Draw the ball
     SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255); // White color
-    SDL_Rect rect = { (int)ball.position.x, (int)ball.position.y, 10, 10 };
+    Vector2 ballPosition = ball->GetPosition();
+    SDL_Rect rect = { (int)ballPosition.x, (int)ballPosition.y, 10, 10 };
     SDL_RenderFillRect(renderer, &rect);
   
     // Show the result

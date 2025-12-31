@@ -9,6 +9,6 @@ PhysicsObject::PhysicsObject(Vector2 pos, Vector2 vel) :
 }
 
 // Movement
-void PhysicsObject::integrate(float deltaTime) {
-  position = position + velocity * deltaTime;
+void PhysicsObject::Integrate(float delta) {
+  position = position + velocity * delta;
 }

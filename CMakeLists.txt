@@ -10,7 +10,11 @@ find_package(GLEW REQUIRED)
 find_package(OpenGL REQUIRED)
 
 # 2. Add your source files
-file(GLOB SOURCES "src/*.cpp")
+set(SOURCES 
+    src/main.cpp 
+    src/PhysicsObject.cpp 
+    src/PhysicsEngine.cpp
+)
 
 # 3. Create the executable
 add_executable(engine ${SOURCES})

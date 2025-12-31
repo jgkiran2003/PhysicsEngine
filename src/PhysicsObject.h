@@ -12,7 +12,7 @@ class PhysicsObject {
     PhysicsObject(Vector2 pos, Vector2 vel);
 
     // Movement
-    void integrate(float deltaTime);
+    void Integrate(float delta);
 
     // Getters
     Vector2 GetPosition() const { return position; }
