@@ -8,12 +8,19 @@ class PhysicsObject {
     Vector2 position;
     Vector2 velocity;
 
-    PhysicsObject(Vector2 pos, Vector2 vel) : position(pos), velocity(vel) {}
+    // Constructor
+    PhysicsObject(Vector2 pos, Vector2 vel);
 
-    void integrate(float deltaTime) {
-      position = position + velocity * deltaTime;
-    }
+    // Movement
+    void integrate(float deltaTime);
 
+    // Getters
+    Vector2 GetPosition() const { return position; }
+    Vector2 GetVelocity() const { return velocity; }
+
+    // Setters
+    void SetPosition(Vector2 pos) { position = pos; }
+    void SetVelocity(Vector2 vel) { velocity = vel; }
 };
 
 #endif
