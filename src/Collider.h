@@ -8,8 +8,8 @@
 class Collider {
   public:
     enum {
-      TPYE_CIRCLE,
-      TPYE_AABB,
+      TYPE_CIRCLE,
+      TYPE_AABB,
       
       TYPE_SIZE
     };

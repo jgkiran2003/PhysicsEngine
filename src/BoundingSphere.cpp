@@ -1,0 +1,21 @@
+#include "BoundingSphere.h"
+
+IntersectData BoundingSphere::IntersectingBoundingSphere(const BoundingSphere& other) const {
+  // Sum of radii
+  float radiusSum = radius + other.GetRadius();
+  // Distance between centers
+  Vector2 centersVector = other.GetCenter() - center;
+  float centerDistance = centersVector.Length();
+  
+  // Check for ovelap
+  if (centerDistance < radiusSum) {
+    return IntersectData(true, centersVector.Normalized() * (centerDistance - radiusSum));
+  }
+
+  // No collision
+  return IntersectData(false, Vector2(0, 0));
+};
+
+void BoundingSphere::Transform(const Vector2& translation) {
+  center = center + translation;
+}
