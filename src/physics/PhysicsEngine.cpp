@@ -18,10 +18,20 @@ void PhysicsEngine::Simulate(float delta) {
 
       // Resolve collision
       if (intersectData.DoesInteract()) {
-        // Perfectly elastic collision of equal masses
-        Vector2 v1_temp = objects[i]->GetVelocity();
-        objects[i]->SetVelocity(objects[j]->GetVelocity());
-        objects[j]->SetVelocity(v1_temp);
+        // Direction of normal force acting on object j
+        Vector2 normal = intersectData.GetDirection().Normalized();
+
+        // Reflect velocity for object i
+        float dotI = objects[i]->GetVelocity().Dot(normal);
+        if (dotI < 0) { // Only bounce if moving TOWARD the hit
+          objects[i]->SetVelocity(objects[i]->GetVelocity() - (normal * 2.0f * dotI));
+        }
+
+        // Reflect velocity for object j
+        float dotJ = objects[j]->GetVelocity().Dot(normal);
+        if (dotJ > 0) { // Only bounce if moving TOWARD the hit
+          objects[j]->SetVelocity(objects[j]->GetVelocity() - (normal * 2.0f * dotJ));
+        }
       }
     }
   }     

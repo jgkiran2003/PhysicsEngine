@@ -12,9 +12,9 @@ int main(int argc, char* argv[]) {
 
   // 4 planes facing inward to form a box
   engine.AddObject(new PhysicsObject(new Plane(Vector2(1, 0), 10), Vector2(0, 0)));  // Left Wall
-  engine.AddObject(new PhysicsObject(new Plane(Vector2(-1, 0), -810), Vector2(0, 0))); // Right Wall
+  engine.AddObject(new PhysicsObject(new Plane(Vector2(1, 0), 810), Vector2(0, 0))); // Right Wall
   engine.AddObject(new PhysicsObject(new Plane(Vector2(0, 1), 10), Vector2(0, 0)));  // Ceiling
-  engine.AddObject(new PhysicsObject(new Plane(Vector2(0, -1), -610), Vector2(0, 0))); // Floor
+  engine.AddObject(new PhysicsObject(new Plane(Vector2(0, 1), 610), Vector2(0, 0))); // Floor
 
   // 50 particles randomly generated within box
   for(int i = 0; i < 50; i++) {
@@ -31,7 +31,7 @@ int main(int argc, char* argv[]) {
   }
 
   // Main loop
-  float timeStep = 0.16f;
+  float timeStep = 0.05f;
 
   while (renderer.IsOpen()) {
     renderer.HandleEvents();

@@ -3,9 +3,7 @@
 
 #include "Collider.h"
 #include "Vector2.h"
-
-// Forward declaration
-class BoundingSphere;
+#include "BoundingSphere.h"
 
 class Plane : public Collider {
   public:
@@ -24,7 +22,7 @@ class Plane : public Collider {
     inline float GetDistance() const { return distance; }
 
   private:
-    Vector2 normal;
+    Vector2 normal; // Unit vector of normal from origin to plane
     float distance;
 };
 
