@@ -10,9 +10,14 @@ class Vector2 {
     // Constructor: Sets x and y when you create the vector
     Vector2(float _x = 0.0f, float _y = 0.0f) : x(_x), y(_y) {}
 
+    // Returns length squared to avoid sqrt
+    inline float LengthSquared() const {
+        return x * x + y * y;
+    }
+
     // Returns length of vector
-    float Length() const {
-        return sqrt(x * x + y * y);
+    inline float Length() const {
+        return std::sqrt(LengthSquared());
     }
 
     // Returns normalised vector
