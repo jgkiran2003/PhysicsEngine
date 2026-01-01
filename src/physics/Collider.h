@@ -9,6 +9,7 @@ class Collider {
     enum {
       TYPE_SPHERE,
       TYPE_AABB,
+      TYPE_PLANE,
       
       TYPE_SIZE
     };
