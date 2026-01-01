@@ -1,6 +1,7 @@
 #include <SDL2/SDL.h>
 #include "PhysicsObject.h"
 #include "PhysicsEngine.h"
+#include "BoundingSphere.h"
 
 int main(int argc, char* argv[]) {
   // Setup SDL
@@ -10,13 +11,19 @@ int main(int argc, char* argv[]) {
 
   // Setup Physics Engine
   PhysicsEngine engine;
-  
+
+  // Ball 1
+  BoundingSphere* sphere1 = new BoundingSphere(Vector2(100, 100), 10);
+  PhysicsObject* ball1 = new PhysicsObject(sphere1, Vector2(3, 0));
+  engine.AddObject(ball1);
+
+  // Ball 2
+  BoundingSphere* sphere2 = new BoundingSphere(Vector2(800, 100), 10);
+  PhysicsObject* ball2 = new PhysicsObject(sphere2, Vector2(-3, 0));
+  engine.AddObject(ball2);
+
+  // Main loop
   float timeStep = 1.0f;
-
-  // Create a ball
-  PhysicsObject* ball = new PhysicsObject(Vector2(200, 100), Vector2(0.1, 0));
-  engine.AddObject(ball);
-
   bool running = true;
   SDL_Event event;
 
@@ -33,11 +40,17 @@ int main(int argc, char* argv[]) {
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
     SDL_RenderClear(renderer);
 
-    // Draw the ball
+    // Draw ball 1
     SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255); // White color
-    Vector2 ballPosition = ball->GetPosition();
-    SDL_Rect rect = { (int)ballPosition.x, (int)ballPosition.y, 10, 10 };
-    SDL_RenderFillRect(renderer, &rect);
+    Vector2 ball1Position = ball1->GetPosition();
+    SDL_Rect rect1 = { (int)ball1Position.x, (int)ball1Position.y, 10, 10 };
+    SDL_RenderFillRect(renderer, &rect1);
+
+    // Draw ball 2
+    SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255); // Red color
+    Vector2 ball2Position = ball2->GetPosition();
+    SDL_Rect rect2 = { (int)ball2Position.x, (int)ball2Position.y, 10, 10 };
+    SDL_RenderFillRect(renderer, &rect2);
   
     // Show the result
     SDL_RenderPresent(renderer);

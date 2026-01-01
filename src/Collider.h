@@ -3,7 +3,6 @@
 
 #include "IntersectData.h"
 #include "Vector2.h"
-#include "PhysicsObject.h"
 
 class Collider {
   public:

@@ -15,6 +15,7 @@ set(SOURCES
     src/PhysicsObject.cpp 
     src/PhysicsEngine.cpp
     src/Collider.cpp
+    src/BoundingSphere.cpp
 )
 
 # 3. Create the executable
