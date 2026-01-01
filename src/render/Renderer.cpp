@@ -5,6 +5,9 @@
 
 Renderer::Renderer(int width, int height) : isOpen(true) {
   SDL_Init(SDL_INIT_VIDEO);
+  origin_x = width / 2;
+  origin_y = height / 2;
+
   window = SDL_CreateWindow("Physics Engine", SDL_WINDOWPOS_UNDEFINED, 
                               SDL_WINDOWPOS_UNDEFINED, width, height, SDL_WINDOW_SHOWN);
   sdlRenderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);

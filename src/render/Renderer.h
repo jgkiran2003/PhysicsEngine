@@ -25,6 +25,10 @@ private:
     SDL_Renderer* sdlRenderer;
     bool          isOpen;
 
+    // Set origin coordinates to center of window
+    float origin_x;
+    float origin_y;
+
     // Helper to draw a circle
     void DrawCircle(int centerX, int centerY, int radius);
 
