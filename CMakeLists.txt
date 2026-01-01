@@ -12,10 +12,10 @@ find_package(OpenGL REQUIRED)
 # 2. Add your source files
 set(SOURCES 
     src/main.cpp 
-    src/PhysicsObject.cpp 
-    src/PhysicsEngine.cpp
-    src/Collider.cpp
-    src/BoundingSphere.cpp
+    src/physics/PhysicsObject.cpp 
+    src/physics/PhysicsEngine.cpp
+    src/physics/Collider.cpp
+    src/physics/BoundingSphere.cpp
 )
 
 # 3. Create the executable
