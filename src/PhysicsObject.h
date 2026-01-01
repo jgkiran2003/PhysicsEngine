@@ -2,25 +2,30 @@
 #define PHYSICS_OBJECT_H
 
 #include "Vector2.h"
+#include "Collider.h"
 
 class PhysicsObject {
   public:
-    Vector2 position;
-    Vector2 velocity;
-
     // Constructor
-    PhysicsObject(Vector2 pos, Vector2 vel);
+    PhysicsObject(Collider* collider, const Vector2& vel);
+
+    // Destructor
+    ~PhysicsObject();
 
     // Movement
     void Integrate(float delta);
 
     // Getters
-    Vector2 GetPosition() const { return position; }
-    Vector2 GetVelocity() const { return velocity; }
+    inline Vector2 GetPosition() const { return collider->GetCenter(); }
+    inline Vector2 GetVelocity() const { return velocity; }
+    inline Collider& GetCollider() { return *collider; }
 
     // Setters
-    void SetPosition(Vector2 pos) { position = pos; }
-    void SetVelocity(Vector2 vel) { velocity = vel; }
+    inline void SetVelocity(const Vector2& vel) { velocity = vel; }
+  
+  private:
+    Vector2 velocity;
+    Collider* collider;
 };
 
 #endif
