@@ -1,6 +1,6 @@
 #include "BoundingSphere.h"
 
-IntersectData BoundingSphere::IntersectingBoundingSphere(const BoundingSphere& other) const {
+IntersectData BoundingSphere::IntersectBoundingSphere(const BoundingSphere& other) const {
   // Sum of radii
   float radiusSum = radius + other.GetRadius();
   // Distance between centers

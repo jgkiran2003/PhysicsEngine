@@ -7,12 +7,12 @@
 class BoundingSphere : public Collider {
   public:
     BoundingSphere(const Vector2& center, float radius) :
-      Collider(Collider::TYPE_CIRCLE),
+      Collider(Collider::TYPE_SPHERE),
       center(center), 
       radius(radius) {}
 
     // Math for collision with another bounding sphere
-    IntersectData IntersectingBoundingSphere(const BoundingSphere& other) const;
+    IntersectData IntersectBoundingSphere(const BoundingSphere& other) const;
 
     // Overriding base class function
     virtual void Transform(const Vector2& translation) override;

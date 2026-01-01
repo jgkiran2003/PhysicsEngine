@@ -8,7 +8,7 @@
 class Collider {
   public:
     enum {
-      TYPE_CIRCLE,
+      TYPE_SPHERE,
       TYPE_AABB,
       
       TYPE_SIZE
