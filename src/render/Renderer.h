@@ -27,6 +27,9 @@ private:
 
     // Helper to draw a circle
     void DrawCircle(int centerX, int centerY, int radius);
+
+    // Helper to draw a line
+    void DrawLine(int x1, int y1, int x2, int y2);
 };
 
 #endif
