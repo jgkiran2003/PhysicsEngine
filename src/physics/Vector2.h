@@ -41,6 +41,11 @@ class Vector2 {
     Vector2 operator*(float scalar) const {
         return Vector2(x * scalar, y * scalar);
     }
+
+    // Rule: Dot product of two vectors
+    float Dot(const Vector2& other) const {
+        return x * other.x + y * other.y;
+    }
 };
 
 #endif
