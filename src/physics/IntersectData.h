@@ -14,6 +14,8 @@ class IntersectData {
 
   private:
     const bool doesInteract;
+    // Direction of penetration - normal vector of collision
+    // Normal vector from closest point on this objects surface to other objects center
     const Vector2 direction;
 };
 
