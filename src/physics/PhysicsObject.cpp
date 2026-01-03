@@ -1,10 +1,5 @@
 #include "PhysicsObject.h"
 
-// Constructor
-PhysicsObject::PhysicsObject(Collider* collider, const Vector2& vel) : 
-  collider(collider), 
-  velocity(vel) {}
-
 // Destructor
 PhysicsObject::~PhysicsObject() {
   if (collider) {
