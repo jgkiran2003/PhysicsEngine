@@ -11,16 +11,16 @@ int main(int argc, char* argv[]) {
   PhysicsEngine engine;
 
   // 4 planes facing inward to form a box
-  engine.AddObject(new PhysicsObject(new Plane(Vector2(1, 0), 10), Vector2(0, 0)));  // Left Wall
-  engine.AddObject(new PhysicsObject(new Plane(Vector2(1, 0), 810), Vector2(0, 0))); // Right Wall
-  engine.AddObject(new PhysicsObject(new Plane(Vector2(0, 1), 10), Vector2(0, 0)));  // Ceiling
-  engine.AddObject(new PhysicsObject(new Plane(Vector2(0, 1), 610), Vector2(0, 0))); // Floor
+  engine.AddObject(new PhysicsObject(new Plane(Vector2(1, 0), -400), Vector2(0, 0))); // Left Wall
+  engine.AddObject(new PhysicsObject(new Plane(Vector2(1, 0), 400), Vector2(0, 0)));  // Right Wall
+  engine.AddObject(new PhysicsObject(new Plane(Vector2(0, 1), -300), Vector2(0, 0))); // Ceiling
+  engine.AddObject(new PhysicsObject(new Plane(Vector2(0, 1), 300), Vector2(0, 0)));  // Floor
 
   // 50 particles randomly generated within box
   for(int i = 0; i < 50; i++) {
     // Random position between (50, 50) and (750, 550)
-    float startX = 50 + (rand() % 700);
-    float startY = 50 + (rand() % 500);
+    float startX = -350 + (rand() % 700);
+    float startY = -250 + (rand() % 500);
 
     // Random velocity
     float velX = (rand() % 10) - 5;
@@ -31,7 +31,7 @@ int main(int argc, char* argv[]) {
   }
 
   // Main loop
-  float timeStep = 0.05f;
+  float timeStep = 0.1f;
 
   while (renderer.IsOpen()) {
     renderer.HandleEvents();

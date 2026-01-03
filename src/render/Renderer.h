@@ -3,6 +3,7 @@
 
 #include <SDL2/SDL.h>
 #include <vector>
+#include "physics/Vector2.h"
 
 class PhysicsObject; // Forward declaration
 
@@ -20,14 +21,15 @@ public:
     bool IsOpen() const { return isOpen; }
     void HandleEvents();
 
+    void setOrigin(float x, float y) {camera_offset = Vector2(x, y); }
+
 private:
     SDL_Window*   window;
     SDL_Renderer* sdlRenderer;
     bool          isOpen;
 
     // Set origin coordinates to center of window
-    float origin_x;
-    float origin_y;
+    Vector2 camera_offset;
 
     // Helper to draw a circle
     void DrawCircle(int centerX, int centerY, int radius);

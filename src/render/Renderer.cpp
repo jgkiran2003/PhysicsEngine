@@ -5,8 +5,7 @@
 
 Renderer::Renderer(int width, int height) : isOpen(true) {
   SDL_Init(SDL_INIT_VIDEO);
-  origin_x = width / 2;
-  origin_y = height / 2;
+  camera_offset = Vector2(width / 2, height / 2);
 
   window = SDL_CreateWindow("Physics Engine", SDL_WINDOWPOS_UNDEFINED, 
                               SDL_WINDOWPOS_UNDEFINED, width, height, SDL_WINDOW_SHOWN);
@@ -31,7 +30,7 @@ void Renderer::Render(const std::vector<PhysicsObject*>& objects) {
     // Only draw if it's actually a sphere
     if (col.GetType() == Collider::TYPE_SPHERE) {
       SDL_SetRenderDrawColor(sdlRenderer, 255, 255, 255, 255); // White balls
-      Vector2 pos = obj->GetPosition();
+      Vector2 pos = obj->GetPosition() + camera_offset;
       BoundingSphere& sphere = (BoundingSphere&)col;
       DrawCircle((int)pos.x, (int)pos.y, (int)sphere.GetRadius());
     } 
@@ -48,8 +47,8 @@ void Renderer::Render(const std::vector<PhysicsObject*>& objects) {
       Vector2 surfaceDir = Vector2(normal.y, -normal.x);
 
       // 3. Draw a long line along that surface direction
-      Vector2 p1 = originPoint + (surfaceDir * 2000); // 2000 is long enough to cover screen
-      Vector2 p2 = originPoint - (surfaceDir * 2000);
+      Vector2 p1 = originPoint + (surfaceDir * 2000) + camera_offset;
+      Vector2 p2 = originPoint - (surfaceDir * 2000) + camera_offset;
 
       DrawLine((int)p1.x, (int)p1.y, (int)p2.x, (int)p2.y);
     }
