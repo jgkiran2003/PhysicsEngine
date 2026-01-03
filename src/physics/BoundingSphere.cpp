@@ -1,6 +1,6 @@
 #include "BoundingSphere.h"
 
-IntersectData BoundingSphere::IntersectBoundingSphere(const BoundingSphere& other) const {
+IntersectData BoundingSphere::IntersectSphere(const BoundingSphere& other) const {
   // Sum of radii
   float radiusSum = radius + other.GetRadius();
   // Distance between centers
@@ -9,7 +9,7 @@ IntersectData BoundingSphere::IntersectBoundingSphere(const BoundingSphere& othe
   
   // Check for ovelap
   if (centerDistance < radiusSum) {
-    return IntersectData(true, centersVector.Normalized() * (radiusSum - centerDistance));
+    return IntersectData(true, centersVector.Normalized());
   }
 
   // No collision

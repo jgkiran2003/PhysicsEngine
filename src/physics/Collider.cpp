@@ -8,7 +8,7 @@ IntersectData Collider::Intersect(const Collider& other) const {
   // Check if both objects are spheres
   if (type == TYPE_SPHERE && other.GetType() == TYPE_SPHERE) {
     BoundingSphere* self = (BoundingSphere*)this;
-    return self->IntersectBoundingSphere((BoundingSphere&)other);
+    return self->IntersectSphere((BoundingSphere&)other);
   }
 
   if (type == TYPE_SPHERE && other.GetType() == TYPE_PLANE) {
