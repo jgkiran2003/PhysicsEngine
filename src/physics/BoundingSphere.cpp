@@ -9,7 +9,7 @@ IntersectData BoundingSphere::IntersectBoundingSphere(const BoundingSphere& othe
   
   // Check for ovelap
   if (centerDistance < radiusSum) {
-    return IntersectData(true, centersVector.Normalized() * (centerDistance - radiusSum));
+    return IntersectData(true, centersVector.Normalized() * (radiusSum - centerDistance));
   }
 
   // No collision

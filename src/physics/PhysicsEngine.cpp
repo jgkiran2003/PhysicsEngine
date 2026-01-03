@@ -23,13 +23,13 @@ void PhysicsEngine::Simulate(float delta) {
 
         // Reflect velocity for object i
         float dotI = objects[i]->GetVelocity().Dot(normal);
-        if (dotI < 0) { // Only bounce if moving TOWARD the hit
+        if (dotI > 0) { // Only bounce if moving TOWARD the hit
           objects[i]->SetVelocity(objects[i]->GetVelocity() - (normal * 2.0f * dotI));
         }
 
         // Reflect velocity for object j
         float dotJ = objects[j]->GetVelocity().Dot(normal);
-        if (dotJ > 0) { // Only bounce if moving TOWARD the hit
+        if (dotJ < 0) { // Only bounce if moving TOWARD the hit
           objects[j]->SetVelocity(objects[j]->GetVelocity() - (normal * 2.0f * dotJ));
         }
       }
