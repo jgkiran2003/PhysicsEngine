@@ -30,6 +30,17 @@ int main(int argc, char* argv[]) {
     engine.AddObject(new PhysicsObject(particleShape, Vector2(velX, velY)));
   }
 
+  // // TESTING
+  // // Ball 1: Stationary in the middle
+  // PhysicsObject* target = new PhysicsObject(new BoundingSphere(Vector2(0, 0), 5), Vector2(-1, 0.5));
+
+  // // Ball 2: Moving from the left, but slightly "higher" than the target
+  // // Offset the Y by 15 pixels so they hit on their edges
+  // PhysicsObject* bullet = new PhysicsObject(new BoundingSphere(Vector2(0, 100), 5), Vector2(-1, -1));
+
+  // engine.AddObject(target);
+  // engine.AddObject(bullet);
+
   // Main loop
   float timeStep = 0.1f;
 
