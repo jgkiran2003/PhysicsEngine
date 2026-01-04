@@ -21,16 +21,24 @@ void PhysicsEngine::Simulate(float delta) {
         // Direction of normal force acting on object j
         Vector2 normal = intersectData.GetDirection().Normalized();
 
-        // Reflect velocity for object i
-        float dotI = objects[i]->GetVelocity().Dot(normal);
-        if (dotI > 0) { // Only bounce if moving TOWARD the hit
-          objects[i]->SetVelocity(objects[i]->GetVelocity() - (normal * 2.0f * dotI));
-        }
+        Vector2 relativeVelocity = objects[i]->GetVelocity() - objects[j]->GetVelocity();
+        float normalVelocity = relativeVelocity.Dot(normal);
+        // Do not resolve if moving apart
+        if (normalVelocity < 0) continue;
 
-        // Reflect velocity for object j
-        float dotJ = objects[j]->GetVelocity().Dot(normal);
-        if (dotJ < 0) { // Only bounce if moving TOWARD the hit
-          objects[j]->SetVelocity(objects[j]->GetVelocity() - (normal * 2.0f * dotJ));
+        float massSum = objects[i]->GetInvMass() + objects[j]->GetInvMass();
+        if (massSum > 0.0f) {
+          float e = 1.0f; 
+          float j_scalar = -(1.0f + e) * normalVelocity;
+          j_scalar /= massSum;
+
+          Vector2 impulseVec = normal * j_scalar;
+
+          // Object A gets pushed (using your A->B normal convention)
+          objects[i]->SetVelocity(objects[i]->GetVelocity() + (impulseVec * objects[i]->GetInvMass()));
+          
+          // Object B gets pushed opposite
+          objects[j]->SetVelocity(objects[j]->GetVelocity() - (impulseVec * objects[j]->GetInvMass()));
         }
       }
     }

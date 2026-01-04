@@ -9,8 +9,14 @@ class PhysicsObject {
     // Constructor
     PhysicsObject(Collider* collider, const Vector2& vel = Vector2(0, 0), const float mass = 1.0f) :
       collider(collider),
-      velocity(vel),
-      inverseMass(1.0f / mass) {}
+      velocity(vel)
+    {
+      if (mass <= 0.0f) {
+        inverseMass = 0.0f; // This represents infinite mass (immovable)
+      } else {
+        inverseMass = 1.0f / mass;
+      }
+    }
 
     // Destructor
     ~PhysicsObject();
