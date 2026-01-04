@@ -22,7 +22,7 @@ class Vector2 {
 
     // Returns normalised vector
     Vector2 Normalized() const {
-        float len = Length();
+        float len = LengthSquared();
         if (len == 0) return Vector2(0, 0); // Prevent division by zero
         return Vector2(x / len, y / len);
     }
