@@ -2,12 +2,12 @@
 #define PLANE_H
 
 #include "Collider.h"
-#include "Vector2.h"
+#include "Vector3.h"
 #include "BoundingSphere.h"
 
 class Plane : public Collider {
   public:
-    Plane(const Vector2& normal, float distance) : 
+    Plane(const Vector3& normal, float distance) : 
       Collider(TYPE_PLANE),
       normal(normal.Normalized()),   
       distance(distance) {}
@@ -15,14 +15,14 @@ class Plane : public Collider {
     // Collision with sphere
     IntersectData IntersectSphere(const BoundingSphere& other) const;
 
-    virtual void Transform(const Vector2& translation) override {} // Static plane
-    virtual Vector2 GetCenter() const override { return normal * distance; }
+    virtual void Transform(const Vector3& translation) override {} // Static plane
+    virtual Vector3 GetCenter() const override { return normal * distance; }
 
-    inline const Vector2& GetNormal() const { return normal; }
+    inline const Vector3& GetNormal() const { return normal; }
     inline float GetDistance() const { return distance; }
 
   private:
-    Vector2 normal; // Unit vector of normal from origin to plane
+    Vector3 normal; // Unit vector of normal from origin to plane
     float distance;
 };
 

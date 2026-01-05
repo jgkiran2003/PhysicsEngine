@@ -1,13 +1,13 @@
 #ifndef PHYSICS_OBJECT_H
 #define PHYSICS_OBJECT_H
 
-#include "Vector2.h"
+#include "Vector3.h"
 #include "Collider.h"
 
 class PhysicsObject {
   public:
     // Constructor
-    PhysicsObject(Collider* collider, const Vector2& vel = Vector2(0, 0), const float mass = 1.0f) :
+    PhysicsObject(Collider* collider, const Vector3& vel = Vector3(0, 0, 0), const float mass = 1.0f) :
       collider(collider),
       velocity(vel)
     {
@@ -25,16 +25,16 @@ class PhysicsObject {
     void Integrate(float delta);
 
     // Getters
-    inline Vector2 GetPosition() const { return collider->GetCenter(); }
-    inline Vector2 GetVelocity() const { return velocity; }
+    inline Vector3 GetPosition() const { return collider->GetCenter(); }
+    inline Vector3 GetVelocity() const { return velocity; }
     inline Collider& GetCollider() { return *collider; }
     inline float GetInvMass() const { return inverseMass; }
 
     // Setters
-    inline void SetVelocity(const Vector2& vel) { velocity = vel; }
+    inline void SetVelocity(const Vector3& vel) { velocity = vel; }
   
   private:
-    Vector2 velocity;
+    Vector3 velocity;
     Collider* collider;
     float inverseMass; // Inverse for optimisation and representing infinite mass
 };

@@ -22,11 +22,11 @@ IntersectData Collider::Intersect(const Collider& other) const {
   }
 
   if (type == TYPE_PLANE && other.GetType() == TYPE_PLANE) {
-    return IntersectData(false, Vector2(0, 0));
+    return IntersectData(false, Vector3(0, 0));
   }
 
 
   // Error for combination that have not been implemented
   std::cerr << "Error: Collision math not implemented for these types." << std::endl;
-  return IntersectData(false, Vector2(0, 0));
+  return IntersectData(false, Vector3(0, 0));
 }

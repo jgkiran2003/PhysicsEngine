@@ -2,10 +2,11 @@
 #include "physics/PhysicsObject.h"
 #include "physics/BoundingSphere.h"
 #include "physics/Plane.h"
+#include "physics/Vector3.h"
 
 Renderer::Renderer(int width, int height) : isOpen(true) {
   SDL_Init(SDL_INIT_VIDEO);
-  camera_offset = Vector2(width / 2, height / 2);
+  camera_offset = Vector3(width / 2, height / 2, 0);
 
   window = SDL_CreateWindow("Physics Engine", SDL_WINDOWPOS_UNDEFINED, 
                               SDL_WINDOWPOS_UNDEFINED, width, height, SDL_WINDOW_SHOWN);
@@ -30,25 +31,25 @@ void Renderer::Render(const std::vector<PhysicsObject*>& objects) {
     // Only draw if it's actually a sphere
     if (col.GetType() == Collider::TYPE_SPHERE) {
       SDL_SetRenderDrawColor(sdlRenderer, 255, 255, 255, 255); // White balls
-      Vector2 pos = obj->GetPosition() + camera_offset;
+      Vector3 pos = obj->GetPosition() + camera_offset;
       BoundingSphere& sphere = (BoundingSphere&)col;
       DrawCircle((int)pos.x, (int)pos.y, (int)sphere.GetRadius());
     } 
     else if (col.GetType() == Collider::TYPE_PLANE) {
       SDL_SetRenderDrawColor(sdlRenderer, 255, 0, 0, 255); // Red for planes
       Plane& plane = (Plane&)col;
-      Vector2 normal = plane.GetNormal();
+      Vector3 normal = plane.GetNormal();
       float dist = plane.GetDistance();
 
       // 1. Closest point on plane to origin
-      Vector2 originPoint = normal * dist;
+      Vector3 originPoint = normal * dist;
 
       // 2. Find the "surface direction" (rotate normal by 90 degrees)
-      Vector2 surfaceDir = Vector2(normal.y, -normal.x);
+      Vector3 surfaceDir = Vector3(normal.y, -normal.x);
 
       // 3. Draw a long line along that surface direction
-      Vector2 p1 = originPoint + (surfaceDir * 2000) + camera_offset;
-      Vector2 p2 = originPoint - (surfaceDir * 2000) + camera_offset;
+      Vector3 p1 = originPoint + (surfaceDir * 2000) + camera_offset;
+      Vector3 p2 = originPoint - (surfaceDir * 2000) + camera_offset;
 
       DrawLine((int)p1.x, (int)p1.y, (int)p2.x, (int)p2.y);
     }

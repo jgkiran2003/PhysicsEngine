@@ -10,9 +10,9 @@ IntersectData Plane::IntersectSphere(const BoundingSphere& other) const {
 
   // Absolute value of distance of sphere from plane
   if (std::abs(distanceFromPlane) < other.GetRadius()) {
-    Vector2 collisionNormal = (distanceFromPlane > 0) ? normal : normal * -1.0f;
+    Vector3 collisionNormal = (distanceFromPlane > 0) ? normal : normal * -1.0f;
     return IntersectData(true, collisionNormal);
   }
 
-  return IntersectData(false, Vector2(0, 0));
+  return IntersectData(false, Vector3(0, 0, 0));
 }

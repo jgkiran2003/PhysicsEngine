@@ -4,7 +4,7 @@ IntersectData BoundingSphere::IntersectSphere(const BoundingSphere& other) const
   // Sum of radii
   float radiusSum = radius + other.GetRadius();
   // Distance between centers
-  Vector2 centersVector = other.GetCenter() - center;
+  Vector3 centersVector = other.GetCenter() - center;
   float centerDistance = centersVector.Length();
   
   // Check for ovelap
@@ -13,9 +13,9 @@ IntersectData BoundingSphere::IntersectSphere(const BoundingSphere& other) const
   }
 
   // No collision
-  return IntersectData(false, Vector2(0, 0));
+  return IntersectData(false, Vector3(0, 0));
 };
 
-void BoundingSphere::Transform(const Vector2& translation) {
+void BoundingSphere::Transform(const Vector3& translation) {
   center = center + translation;
 }

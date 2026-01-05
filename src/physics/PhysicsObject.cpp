@@ -8,6 +8,6 @@ PhysicsObject::~PhysicsObject() {
 }
 // Movement
 void PhysicsObject::Integrate(float delta) {
-  Vector2 displacement = velocity * delta;
+  Vector3 displacement = velocity * delta;
   collider->Transform(displacement);
 }

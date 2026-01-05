@@ -2,7 +2,7 @@
 #define COLLIDER_H
 
 #include "IntersectData.h"
-#include "Vector2.h"
+#include "Vector3.h"
 
 class Collider {
   public:
@@ -21,8 +21,8 @@ class Collider {
     IntersectData Intersect(const Collider& other) const;
 
     // Virtual to be overriden
-    virtual void Transform(const Vector2& translation) {}
-    virtual Vector2 GetCenter() const { return Vector2(0, 0); }
+    virtual void Transform(const Vector3& translation) {}
+    virtual Vector3 GetCenter() const { return Vector3(0, 0, 0); }
 
     inline int GetType() const { return type; }
 
