@@ -15,7 +15,8 @@ public:
 
     // Functions
     void Clear();
-    void Render(const std::vector<PhysicsObject*>& objects);
+    void Render2D(const std::vector<PhysicsObject*>& objects);
+    void Render3D(const std::vector<PhysicsObject*>& objects);
     void Present();
 
     bool IsOpen() const { return isOpen; }
@@ -26,10 +27,14 @@ public:
 private:
     SDL_Window*   window;
     SDL_Renderer* sdlRenderer;
+    SDL_GLContext glContext;
     bool          isOpen;
 
     // Set origin coordinates to center of window
     Vector3 camera_offset;
+
+    // Helper to draw 3d sphere
+    void DrawPoint3D(const Vector3& pos, float size);
 
     // Helper to draw a circle
     void DrawCircle(int centerX, int centerY, int radius);
