@@ -15,7 +15,6 @@ public:
 
     // Functions
     void Clear();
-    void Render2D(const std::vector<PhysicsObject*>& objects);
     void Render3D(const std::vector<PhysicsObject*>& objects);
     void Present();
 
@@ -26,7 +25,6 @@ public:
 
 private:
     SDL_Window*   window;
-    SDL_Renderer* sdlRenderer;
     SDL_GLContext glContext;
     bool          isOpen;
 
@@ -35,12 +33,6 @@ private:
 
     // Helper to draw 3d sphere
     void DrawPoint3D(const Vector3& pos, float size);
-
-    // Helper to draw a circle
-    void DrawCircle(int centerX, int centerY, int radius);
-
-    // Helper to draw a line
-    void DrawLine(int x1, int y1, int x2, int y2);
 };
 
 #endif
