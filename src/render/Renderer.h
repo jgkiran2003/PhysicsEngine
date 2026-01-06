@@ -33,6 +33,8 @@ private:
 
     // Helper to draw 3d sphere
     void DrawPoint3D(const Vector3& pos, float size);
+
+    void DrawBox();
 };
 
 #endif

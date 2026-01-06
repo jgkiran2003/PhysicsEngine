@@ -31,6 +31,8 @@ Renderer::Renderer(int width, int height) : isOpen(true) {
 
   // Enable Depth Testing (so balls don't overlap wrongly)
   glEnable(GL_DEPTH_TEST);
+  glEnable(GL_BLEND);
+  glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
   camera_offset = Vector3(0, 0, 0);
 }
@@ -54,10 +56,13 @@ void Renderer::Render3D(const std::vector<PhysicsObject*>& objects) {
 
     if (col.GetType() == Collider::TYPE_SPHERE) {
       float r = ((BoundingSphere&)col).GetRadius();
-      
       DrawPoint3D(pos, r);
     }
   }
+
+  glDepthMask(GL_FALSE); 
+  DrawBox(); 
+  glDepthMask(GL_TRUE);
 }
 
 void Renderer::Present() {
@@ -83,4 +88,46 @@ void Renderer::DrawPoint3D(const Vector3& pos, float size) {
 
   glVertex3f(x_proj / 400.0f, y_proj / 300.0f, 0.0f); 
   glEnd();
+}
+
+void Renderer::DrawBox() {
+    glBegin(GL_QUADS);
+    
+    // Set a transparent blue color (RGBA)
+    glColor4f(0.2f, 0.4f, 1.0f, 0.2f);
+
+    // Define the boundaries based on your main.cpp planes
+    float x = 400.0f;
+    float y = 300.0f;
+    float z = 400.0f;
+
+    // We apply the same perspective/camera logic as the particles
+    auto project = [&](float px, float py, float pz) {
+        float z_final = (pz + camera_offset.z) + 1000.0f;
+        float x_proj = (px * 500.0f) / z_final;
+        float y_proj = (py * 500.0f) / z_final;
+        glVertex3f(x_proj / 400.0f, y_proj / 300.0f, 0.0f);
+    };
+
+    // Back Face (Z = 400)
+    project(-x, -y, z); project(x, -y, z); project(x, y, z); project(-x, y, z);
+    // Front Face (Z = -400)
+    project(-x, -y, -z); project(x, -y, -z); project(x, y, -z); project(-x, y, -z);
+    // Left Face (X = -400)
+    project(-x, -y, -z); project(-x, -y, z); project(-x, y, z); project(-x, y, -z);
+    // Right Face (X = 400)
+    project(x, -y, -z); project(x, -y, z); project(x, y, z); project(x, y, -z);
+    // Floor (Y = 300)
+    project(-x, y, -z); project(x, y, -z); project(x, y, z); project(-x, y, z);
+    // Ceiling (Y = -300)
+    project(-x, -y, -z); project(x, -y, -z); project(x, -y, z); project(-x, -y, z);
+
+    glEnd();
+
+    // Optional: Draw wireframe edges so the box is easier to see
+    glLineWidth(2.0f);
+    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+    glColor4f(1.0f, 1.0f, 1.0f, 0.5f); // White outlines
+    // Repeat the project calls here...
+    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL); // Reset to fill
 }
