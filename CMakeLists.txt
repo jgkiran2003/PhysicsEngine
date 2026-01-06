@@ -29,6 +29,7 @@ target_include_directories(engine PRIVATE src)
 # 5. Link the libraries to your program
 target_link_libraries(engine PRIVATE 
     SDL2::SDL2 
+    GLU
     GLEW::GLEW 
     OpenGL::GL
 )

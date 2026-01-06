@@ -5,6 +5,7 @@
 #include "physics/Vector3.h"
 
 #include <GL/glew.h>         // Must be first
+#include <GL/glu.h>          // OpenGL Utility Library
 #include <SDL2/SDL.h>        // Standard SDL
 #include <SDL2/SDL_opengl.h> // SDL's OpenGL support
 
@@ -35,6 +36,7 @@ Renderer::Renderer(int width, int height) : isOpen(true) {
   glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
   camera_offset = Vector3(0, 0, 0);
+  rotationY = 0.0f;
 }
 
 Renderer::~Renderer() {
@@ -49,6 +51,22 @@ void Renderer::Clear() {
 }
 
 void Renderer::Render3D(const std::vector<PhysicsObject*>& objects) {
+  // Setup the "Projection" (The Lens)
+  glMatrixMode(GL_PROJECTION);
+  glLoadIdentity();
+  // This creates a 75-degree field of view with a near and far clipping plane
+  gluPerspective(75.0, 820.0/620.0, 1.0, 2000.0);
+
+  // Reset the "View" so rotations don't stack every frame
+  glMatrixMode(GL_MODELVIEW);
+  glLoadIdentity();
+
+  // Move the camera back 1000 units so we can see the center (0,0,0)
+  glTranslatef(0, 0, -1000.0f);
+
+  // Apply the rotation around the Y axis (0, 1, 0)
+  glRotatef(rotationY, 0, 1, 0);
+  
   // Simple projection without shaders
   for (auto* obj : objects) {
     Collider& col = obj->GetCollider();
@@ -56,13 +74,11 @@ void Renderer::Render3D(const std::vector<PhysicsObject*>& objects) {
 
     if (col.GetType() == Collider::TYPE_SPHERE) {
       float r = ((BoundingSphere&)col).GetRadius();
-      DrawPoint3D(pos, r);
+      DrawSimplePoint(pos, r);
     }
   }
 
-  glDepthMask(GL_FALSE); 
-  DrawBox(); 
-  glDepthMask(GL_TRUE);
+  DrawBoxSimple(); 
 }
 
 void Renderer::Present() {
@@ -73,61 +89,73 @@ void Renderer::HandleEvents() {
   SDL_Event e;
   while (SDL_PollEvent(&e)) {
     if (e.type == SDL_QUIT) isOpen = false;
+    // Check for key presses
+    if (e.type == SDL_KEYDOWN) {
+      switch (e.key.keysym.sym) {
+        case SDLK_LEFT:
+          rotationY -= 2.0f; // Spin left
+          break;
+        case SDLK_RIGHT:
+          rotationY += 2.0f; // Spin right
+          break;
+      }
+    }
   }
 }
 
-void Renderer::DrawPoint3D(const Vector3& pos, float size) {
-  float z_final = pos.z + 1000.0f;
-  float x_proj = (pos.x * 500.0f) / z_final;
-  float y_proj = (pos.y * 500.0f) / z_final;
-  glPointSize(size * (1000.0f / z_final));
-
-  // Legacy 3D visualisation
-  glBegin(GL_POINTS);
-  glColor3f(1.0f, 1.0f, 1.0f); // White
-
-  glVertex3f(x_proj / 400.0f, y_proj / 300.0f, 0.0f); 
-  glEnd();
+void Renderer::DrawSimplePoint(const Vector3& pos, float size) {
+    glPointSize(size); // Set size BEFORE glBegin
+    glBegin(GL_POINTS);
+    glColor3f(1.0f, 1.0f, 1.0f);
+    glVertex3f(pos.x, pos.y, pos.z); 
+    glEnd();
 }
 
-void Renderer::DrawBox() {
-    glBegin(GL_QUADS);
-    
-    // Set a transparent blue color (RGBA)
-    glColor4f(0.2f, 0.4f, 1.0f, 0.2f);
-
-    // Define the boundaries based on your main.cpp planes
+void Renderer::DrawBoxSimple() {
+    // Boundaries from your main.cpp planes
     float x = 400.0f;
     float y = 300.0f;
     float z = 400.0f;
 
-    // We apply the same perspective/camera logic as the particles
-    auto project = [&](float px, float py, float pz) {
-        float z_final = (pz + camera_offset.z) + 1000.0f;
-        float x_proj = (px * 500.0f) / z_final;
-        float y_proj = (py * 500.0f) / z_final;
-        glVertex3f(x_proj / 400.0f, y_proj / 300.0f, 0.0f);
-    };
+    // --- Transparent Faces ---
+    glEnable(GL_BLEND);
+    glDepthMask(GL_FALSE); // Particles inside will be visible through the walls
+    glColor4f(0.2f, 0.4f, 1.0f, 0.1f); // Very faint blue
 
-    // Back Face (Z = 400)
-    project(-x, -y, z); project(x, -y, z); project(x, y, z); project(-x, y, z);
-    // Front Face (Z = -400)
-    project(-x, -y, -z); project(x, -y, -z); project(x, y, -z); project(-x, y, -z);
-    // Left Face (X = -400)
-    project(-x, -y, -z); project(-x, -y, z); project(-x, y, z); project(-x, y, -z);
-    // Right Face (X = 400)
-    project(x, -y, -z); project(x, -y, z); project(x, y, z); project(x, y, -z);
-    // Floor (Y = 300)
-    project(-x, y, -z); project(x, y, -z); project(x, y, z); project(-x, y, z);
-    // Ceiling (Y = -300)
-    project(-x, -y, -z); project(x, -y, -z); project(x, -y, z); project(-x, -y, z);
-
+    glBegin(GL_QUADS);
+      // Front (Z = -400)
+      glVertex3f(-x, -y, -z); glVertex3f( x, -y, -z); 
+      glVertex3f( x,  y, -z); glVertex3f(-x,  y, -z);
+      // Back (Z = 400)
+      glVertex3f(-x, -y,  z); glVertex3f( x, -y,  z); 
+      glVertex3f( x,  y,  z); glVertex3f(-x,  y,  z);
+      // Left (X = -400)
+      glVertex3f(-x, -y, -z); glVertex3f(-x, -y,  z); 
+      glVertex3f(-x,  y,  z); glVertex3f(-x,  y, -z);
+      // Right (X = 400)
+      glVertex3f( x, -y, -z); glVertex3f( x, -y,  z); 
+      glVertex3f( x,  y,  z); glVertex3f( x,  y, -z);
+      // Top (Y = -300)
+      glVertex3f(-x, -y, -z); glVertex3f( x, -y, -z); 
+      glVertex3f( x, -y,  z); glVertex3f(-x, -y,  z);
+      // Bottom (Y = 300)
+      glVertex3f(-x,  y, -z); glVertex3f( x,  y, -z); 
+      glVertex3f( x,  y,  z); glVertex3f(-x,  y,  z);
     glEnd();
 
-    // Optional: Draw wireframe edges so the box is easier to see
-    glLineWidth(2.0f);
+    // --- Solid Wireframe Outlines ---
+    glDepthMask(GL_TRUE); // Turn depth writing back on
     glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-    glColor4f(1.0f, 1.0f, 1.0f, 0.5f); // White outlines
-    // Repeat the project calls here...
-    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL); // Reset to fill
+    glLineWidth(2.0f);
+    glColor4f(1.0f, 1.0f, 1.0f, 0.5f); // Semi-transparent white
+
+    // Re-draw the same geometry as lines
+    glBegin(GL_QUADS);
+      glVertex3f(-x, -y, -z); glVertex3f( x, -y, -z); glVertex3f( x,  y, -z); glVertex3f(-x,  y, -z);
+      glVertex3f(-x, -y,  z); glVertex3f( x, -y,  z); glVertex3f( x,  y,  z); glVertex3f(-x,  y,  z);
+      glVertex3f(-x, -y, -z); glVertex3f(-x, -y,  z); glVertex3f(-x,  y,  z); glVertex3f(-x,  y, -z);
+      glVertex3f( x, -y, -z); glVertex3f( x, -y,  z); glVertex3f( x,  y,  z); glVertex3f( x,  y, -z);
+    glEnd();
+
+    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL); // Reset to standard filling
 }

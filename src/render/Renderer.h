@@ -30,11 +30,12 @@ private:
 
     // Set origin coordinates to center of window
     Vector3 camera_offset;
+    float rotationY;
 
     // Helper to draw 3d sphere
-    void DrawPoint3D(const Vector3& pos, float size);
+    void DrawSimplePoint(const Vector3& pos, float size);
 
-    void DrawBox();
+    void DrawBoxSimple();
 };
 
 #endif
