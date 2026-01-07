@@ -1,10 +1,10 @@
 #include "Collider.h"
-#include "IntersectData.h"
+#include "CollisionData.h"
 #include "BoundingSphere.h"
 #include "Plane.h"
 #include <iostream>
 
-IntersectData Collider::Intersect(const Collider& other) const {
+CollisionData Collider::Intersect(const Collider& other) const {
   // Check if both objects are spheres
   if (type == TYPE_SPHERE && other.GetType() == TYPE_SPHERE) {
     BoundingSphere* self = (BoundingSphere*)this;
@@ -22,11 +22,11 @@ IntersectData Collider::Intersect(const Collider& other) const {
   }
 
   if (type == TYPE_PLANE && other.GetType() == TYPE_PLANE) {
-    return IntersectData(false, Vector3(0, 0));
+    return CollisionData(false);
   }
 
 
   // Error for combination that have not been implemented
   std::cerr << "Error: Collision math not implemented for these types." << std::endl;
-  return IntersectData(false, Vector3(0, 0));
+  return CollisionData(false);
 }

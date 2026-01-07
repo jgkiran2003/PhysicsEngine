@@ -1,7 +1,7 @@
 #include "Plane.h"
 #include "BoundingSphere.h"
 
-IntersectData Plane::IntersectSphere(const BoundingSphere& other) const {
+CollisionData Plane::IntersectSphere(const BoundingSphere& other) const {
   // Scalar projection of sphere center position vector onto unit normal
   float distanceFromOrigin = normal.Dot(other.GetCenter());
 
@@ -11,8 +11,8 @@ IntersectData Plane::IntersectSphere(const BoundingSphere& other) const {
   // Absolute value of distance of sphere from plane
   if (std::abs(distanceFromPlane) < other.GetRadius()) {
     Vector3 collisionNormal = (distanceFromPlane > 0) ? normal : normal * -1.0f;
-    return IntersectData(true, collisionNormal);
+    return CollisionData(true, collisionNormal);
   }
 
-  return IntersectData(false, Vector3(0, 0, 0));
+  return CollisionData(false, Vector3(0, 0, 0));
 }

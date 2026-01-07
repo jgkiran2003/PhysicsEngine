@@ -1,7 +1,7 @@
 #ifndef COLLIDER_H
 #define COLLIDER_H
 
-#include "IntersectData.h"
+#include "CollisionData.h"
 #include "Vector3.h"
 
 class Collider {
@@ -18,7 +18,7 @@ class Collider {
     Collider(int type) : type(type) {}
 
     // Checks for collisions
-    IntersectData Intersect(const Collider& other) const;
+    CollisionData Intersect(const Collider& other) const;
 
     // Virtual to be overriden
     virtual void Transform(const Vector3& translation) {}

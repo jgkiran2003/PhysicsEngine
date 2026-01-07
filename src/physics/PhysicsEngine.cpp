@@ -5,7 +5,7 @@ void PhysicsEngine::AddObject(PhysicsObject* object) {
 }
 
 void PhysicsEngine::Simulate(float delta) {
-  // 1. CONSTANT FORCES (Global)
+  // CONSTANT FORCES (Global)
   Vector3 gravity(0.0f, -9.81f, 0.0f);
 
   for (auto* obj : objects) {
@@ -23,13 +23,13 @@ void PhysicsEngine::Simulate(float delta) {
   // Check for collisions
   for (int i = 0; i < objects.size(); i++) {
     for (int j = i + 1; j < objects.size(); j++) {
-      IntersectData intersectData = 
+      CollisionData collisionData = 
         objects[i]->GetCollider().Intersect(objects[j]->GetCollider());
 
       // Resolve collision
-      if (intersectData.DoesInteract()) {
+      if (collisionData.DoesInteract()) {
         // Direction of normal force acting on object j
-        Vector3 normal = intersectData.GetDirection().Normalized();
+        Vector3 normal = collisionData.GetDirection().Normalized();
 
         Vector3 relativeVelocity = objects[i]->GetVelocity() - objects[j]->GetVelocity();
         float normalVelocity = relativeVelocity.Dot(normal);

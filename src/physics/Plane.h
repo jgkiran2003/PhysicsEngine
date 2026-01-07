@@ -13,7 +13,7 @@ class Plane : public Collider {
       distance(distance) {}
 
     // Collision with sphere
-    IntersectData IntersectSphere(const BoundingSphere& other) const;
+    CollisionData IntersectSphere(const BoundingSphere& other) const;
 
     virtual void Transform(const Vector3& translation) override {} // Static plane
     virtual Vector3 GetCenter() const override { return normal * distance; }

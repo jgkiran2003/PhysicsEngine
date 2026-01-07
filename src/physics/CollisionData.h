@@ -1,13 +1,18 @@
-#ifndef INTERSECT_DATA_H
-#define INTERSECT_DATA_H
+#ifndef COLLISION_DATA_H
+#define COLLISION_DATA_H
 
 #include "Vector3.h"
 
-class IntersectData {
+class CollisionData {
   public:
-    IntersectData(const bool doesInteract, const Vector3& direction) : 
+    CollisionData(
+      const bool doesInteract, 
+      const Vector3& direction = Vector3(0, 0), 
+      const float distance = 0.0f
+    ) : 
       doesInteract(doesInteract), 
-      direction(direction) {}
+      direction(direction),
+      distance(distance) {}
 
     inline bool DoesInteract() const { return doesInteract; }
     inline Vector3 GetDirection() const { return direction; }
@@ -17,6 +22,7 @@ class IntersectData {
     // Direction of penetration - normal vector of collision
     // Normal vector from closest point on this objects surface to other objects center
     const Vector3 direction;
+    float distance;
 };
 
 #endif
