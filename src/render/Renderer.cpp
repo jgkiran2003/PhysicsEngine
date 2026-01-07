@@ -78,6 +78,7 @@ void Renderer::Render3D(const std::vector<PhysicsObject*>& objects) {
     }
   }
 
+  DrawGrid();
   DrawBoxSimple(); 
 }
 
@@ -158,4 +159,24 @@ void Renderer::DrawBoxSimple() {
     glEnd();
 
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL); // Reset to standard filling
+}
+
+void Renderer::DrawGrid() {
+  float size = 1000.0f;  // Total size of the grid
+  float step = 100.0f;  // Distance between lines
+  float y_floor = -305.0f; // Matches your physics "Floor"
+
+  glBegin(GL_LINES);
+  glColor4f(0.5f, 0.5f, 0.5f, 0.3f); // Faint gray color
+
+  for (float i = -size; i <= size; i += step) {
+    // Lines parallel to Z-axis
+    glVertex3f(i, y_floor, -size);
+    glVertex3f(i, y_floor, size);
+
+    // Lines parallel to X-axis
+    glVertex3f(-size, y_floor, i);
+    glVertex3f(size, y_floor, i);
+  }
+  glEnd();
 }

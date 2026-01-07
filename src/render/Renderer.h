@@ -36,6 +36,8 @@ private:
     void DrawSimplePoint(const Vector3& pos, float size);
 
     void DrawBoxSimple();
+
+    void DrawGrid();
 };
 
 #endif
