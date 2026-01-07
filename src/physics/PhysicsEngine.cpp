@@ -5,6 +5,16 @@ void PhysicsEngine::AddObject(PhysicsObject* object) {
 }
 
 void PhysicsEngine::Simulate(float delta) {
+  // 1. CONSTANT FORCES (Global)
+  Vector3 gravity(0.0f, -9.81f, 0.0f);
+
+  for (auto* obj : objects) {
+    if (obj->GetInvMass() > 0.0f) {
+      Vector3 gravityForce = gravity / obj->GetInvMass();
+      obj->AddForce(gravityForce);
+    }
+  }
+  
   // Move everything
   for (int i = 0; i < objects.size(); i++) {
     objects[i]->Integrate(delta);
