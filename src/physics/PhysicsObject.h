@@ -9,7 +9,8 @@ class PhysicsObject {
     // Constructor
     PhysicsObject(Collider* collider, const Vector3& vel = Vector3(0, 0, 0), const float mass = 1.0f) :
       collider(collider),
-      velocity(vel)
+      velocity(vel),
+      forceAccumulator(Vector3(0, 0, 0))
     {
       if (mass <= 0.0f) {
         inverseMass = 0.0f; // This represents infinite mass (immovable)
@@ -24,6 +25,14 @@ class PhysicsObject {
     // Movement
     void Integrate(float delta);
 
+    void AddForce(const Vector3& force) {
+      forceAccumulator = forceAccumulator + force;
+    }
+
+    void ClearForceAccumulator() {
+      forceAccumulator = Vector3(0, 0, 0);
+    }
+
     // Getters
     inline Vector3 GetPosition() const { return collider->GetCenter(); }
     inline Vector3 GetVelocity() const { return velocity; }
@@ -37,6 +46,8 @@ class PhysicsObject {
     Vector3 velocity;
     Collider* collider;
     float inverseMass; // Inverse for optimisation and representing infinite mass
+
+    Vector3 forceAccumulator;
 };
 
 #endif

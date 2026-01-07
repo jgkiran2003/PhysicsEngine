@@ -43,6 +43,11 @@ class Vector3 {
         return Vector3(x * scalar, y * scalar, z * scalar);
     }
 
+    // Rule: Dividing by a number
+    Vector3 operator/(float scalar) const {
+        return Vector3(x / scalar, y / scalar, z / scalar);
+    }
+
     // Rule: Dot product of two vectors
     float Dot(const Vector3& other) const {
         return x * other.x + y * other.y + z * other.z;
