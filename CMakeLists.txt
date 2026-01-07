@@ -12,19 +12,24 @@ find_package(OpenGL REQUIRED)
 # 2. Add your source files
 set(SOURCES 
     src/main.cpp 
-    src/PhysicsObject.cpp 
-    src/PhysicsEngine.cpp
+    src/render/Renderer.cpp
+    src/physics/PhysicsObject.cpp 
+    src/physics/PhysicsEngine.cpp
+    src/physics/Collider.cpp
+    src/physics/BoundingSphere.cpp
+    src/physics/Plane.cpp
 )
 
 # 3. Create the executable
 add_executable(engine ${SOURCES})
 
 # 4. Tell the compiler where to find header files
-target_include_directories(engine PRIVATE include)
+target_include_directories(engine PRIVATE src)
 
 # 5. Link the libraries to your program
 target_link_libraries(engine PRIVATE 
     SDL2::SDL2 
+    GLU
     GLEW::GLEW 
     OpenGL::GL
 )
