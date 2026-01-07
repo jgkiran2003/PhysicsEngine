@@ -36,6 +36,7 @@ Renderer::Renderer(int width, int height) : isOpen(true) {
   glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
   camera_offset = Vector3(0, 0, 0);
+  rotationX = 0.0f;
   rotationY = 0.0f;
 }
 
@@ -64,7 +65,8 @@ void Renderer::Render3D(const std::vector<PhysicsObject*>& objects) {
   // Move the camera back 1000 units so we can see the center (0,0,0)
   glTranslatef(0, 0, -1000.0f);
 
-  // Apply the rotation around the Y axis (0, 1, 0)
+  // Apply rotation along X and Y axis
+  glRotatef(rotationX, 1, 0, 0);
   glRotatef(rotationY, 0, 1, 0);
   
   // Simple projection without shaders
@@ -94,10 +96,16 @@ void Renderer::HandleEvents() {
     if (e.type == SDL_KEYDOWN) {
       switch (e.key.keysym.sym) {
         case SDLK_LEFT:
-          rotationY -= 2.0f; // Spin left
+          rotationY += 2.0f; // Spin left
           break;
         case SDLK_RIGHT:
-          rotationY += 2.0f; // Spin right
+          rotationY -= 2.0f; // Spin right
+          break;
+        case SDLK_UP:
+          rotationX += 2.0f; // Spin up
+          break;
+        case SDLK_DOWN:
+          rotationX -= 2.0f; // Spin down
           break;
       }
     }

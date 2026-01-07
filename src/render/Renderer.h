@@ -30,6 +30,7 @@ private:
 
     // Set origin coordinates to center of window
     Vector3 camera_offset;
+    float rotationX;
     float rotationY;
 
     // Helper to draw 3d sphere
