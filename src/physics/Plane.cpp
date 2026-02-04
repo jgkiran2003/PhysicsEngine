@@ -8,11 +8,13 @@ CollisionData Plane::IntersectSphere(const BoundingSphere& other) const {
   // Shortest distance of sphere from plane
   float distanceFromPlane = distanceFromOrigin - distance;
 
+  float penetrationDistance = other.GetRadius() - std::abs(distanceFromPlane);
+
   // Absolute value of distance of sphere from plane
-  if (std::abs(distanceFromPlane) < other.GetRadius()) {
+  if (penetrationDistance > 0.0f) {
     Vector3 collisionNormal = (distanceFromPlane > 0) ? normal : normal * -1.0f;
-    return CollisionData(true, collisionNormal);
+    return CollisionData(true, collisionNormal, penetrationDistance);
   }
 
-  return CollisionData(false, Vector3(0, 0, 0));
+  return CollisionData(false);
 }

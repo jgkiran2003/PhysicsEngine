@@ -1,19 +1,21 @@
 #include "BoundingSphere.h"
 
 CollisionData BoundingSphere::IntersectSphere(const BoundingSphere& other) const {
-  // Sum of radii
+
   float radiusSum = radius + other.GetRadius();
   // Distance between centers
   Vector3 centersVector = other.GetCenter() - center;
   float centerDistance = centersVector.Length();
-  
-  // Check for ovelap
-  if (centerDistance < radiusSum) {
-    return CollisionData(true, centersVector.Normalized());
+  // Penetration distance
+  float penetrationDistance = radiusSum - centerDistance;
+
+  // Check for overlap
+  if (penetrationDistance > 0.0f) {
+    return CollisionData(true, centersVector.Normalized(), penetrationDistance);
   }
 
   // No collision
-  return CollisionData(false, Vector3(0, 0));
+  return CollisionData(false);
 };
 
 void BoundingSphere::Transform(const Vector3& translation) {

@@ -13,10 +13,10 @@ int main(int argc, char* argv[]) {
   // 4 planes facing inward to form a box
   engine.AddObject(new PhysicsObject(new Plane(Vector3(1, 0, 0), -400), Vector3(0, 0, 0), 0.0f)); // Left Wall
   engine.AddObject(new PhysicsObject(new Plane(Vector3(1, 0, 0), 400), Vector3(0, 0, 0), 0.0f));  // Right Wall
-  engine.AddObject(new PhysicsObject(new Plane(Vector3(0, 1, 0), -300), Vector3(0, 0, 0), 0.0f)); // Ceiling
-  engine.AddObject(new PhysicsObject(new Plane(Vector3(0, 1, 0), 300), Vector3(0, 0, 0), 0.0f));  // Floor
-  engine.AddObject(new PhysicsObject(new Plane(Vector3(0, 0, 1), -400), Vector3(0, 0, 0), 0.0f)); // Front
-  engine.AddObject(new PhysicsObject(new Plane(Vector3(0, 0, 1), 400), Vector3(0, 0, 0), 0.0f));  // Back
+  engine.AddObject(new PhysicsObject(new Plane(Vector3(0, 1, 0), -300), Vector3(0, 0, 0), 0.0f)); // Floor
+  engine.AddObject(new PhysicsObject(new Plane(Vector3(0, 1, 0), 300), Vector3(0, 0, 0), 0.0f));  // Ceiling
+  engine.AddObject(new PhysicsObject(new Plane(Vector3(0, 0, 1), -400), Vector3(0, 0, 0), 0.0f)); // Back
+  engine.AddObject(new PhysicsObject(new Plane(Vector3(0, 0, 1), 400), Vector3(0, 0, 0), 0.0f));  // Front
 
   // 50 particles randomly generated within box
   for(int i = 0; i < 50; i++) {

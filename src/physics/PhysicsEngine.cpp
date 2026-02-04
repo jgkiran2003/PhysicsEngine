@@ -6,8 +6,9 @@ void PhysicsEngine::AddObject(PhysicsObject* object) {
 
 void PhysicsEngine::Simulate(float delta) {
   // CONSTANT FORCES (Global)
-  Vector3 gravity(0.0f, -9.81f, 0.0f);
+  Vector3 gravity(0.0f, -1.0f, 0.0f);
 
+  // Add global forces
   for (auto* obj : objects) {
     if (obj->GetInvMass() > 0.0f) {
       Vector3 gravityForce = gravity / obj->GetInvMass();
@@ -28,27 +29,25 @@ void PhysicsEngine::Simulate(float delta) {
 
       // Resolve collision
       if (collisionData.DoesInteract()) {
+        // Positional correction
+        objects[i]->GetCollider().Transform(collisionData.GetDirection() * -collisionData.GetDistance());
+        objects[j]->GetCollider().Transform(collisionData.GetDirection() * collisionData.GetDistance());
+
         // Direction of normal force acting on object j
         Vector3 normal = collisionData.GetDirection().Normalized();
-
         Vector3 relativeVelocity = objects[i]->GetVelocity() - objects[j]->GetVelocity();
         float normalVelocity = relativeVelocity.Dot(normal);
         // Do not resolve if moving apart
         if (normalVelocity < 0) continue;
 
-        float massSum = objects[i]->GetInvMass() + objects[j]->GetInvMass();
-        if (massSum > 0.0f) {
+        float invMassSum = objects[i]->GetInvMass() + objects[j]->GetInvMass();
+        if (invMassSum > 0.0f) {
           float e = 1.0f; 
-          float j_scalar = -(1.0f + e) * normalVelocity;
-          j_scalar /= massSum;
+          float k = -(1.0f + e) * normalVelocity / invMassSum;
+          Vector3 impulse = normal * k;
 
-          Vector3 impulseVec = normal * j_scalar;
-
-          // Object A gets pushed (using your A->B normal convention)
-          objects[i]->SetVelocity(objects[i]->GetVelocity() + (impulseVec * objects[i]->GetInvMass()));
-          
-          // Object B gets pushed opposite
-          objects[j]->SetVelocity(objects[j]->GetVelocity() - (impulseVec * objects[j]->GetInvMass()));
+          objects[i]->SetVelocity(objects[i]->GetVelocity() + (impulse * objects[i]->GetInvMass()));
+          objects[j]->SetVelocity(objects[j]->GetVelocity() - (impulse * objects[j]->GetInvMass()));
         }
       }
     }

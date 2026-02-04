@@ -16,6 +16,7 @@ class CollisionData {
 
     inline bool DoesInteract() const { return doesInteract; }
     inline Vector3 GetDirection() const { return direction; }
+    inline float GetDistance() const { return distance; }
 
   private:
     const bool doesInteract;
