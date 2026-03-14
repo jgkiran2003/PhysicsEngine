@@ -23,7 +23,7 @@ class PhysicsObject {
     ~PhysicsObject();
 
     // Movement
-    void Integrate(float delta);
+    void Integrate(float delta, const Vector3& globalAcceleration);
 
     void Translate(const Vector3& offset) {
       collider->Transform(offset);

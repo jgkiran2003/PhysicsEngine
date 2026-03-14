@@ -7,18 +7,10 @@ void PhysicsEngine::AddObject(PhysicsObject* object) {
 void PhysicsEngine::Simulate(float delta) {
   // CONSTANT FORCES (Global)
   Vector3 gravity(0.0f, -1.0f, 0.0f);
-
-  // Add global forces
-  for (auto* obj : objects) {
-    if (obj->GetInvMass() > 0.0f) {
-      Vector3 gravityForce = gravity / obj->GetInvMass();
-      obj->AddForce(gravityForce);
-    }
-  }
   
   // Move everything
   for (int i = 0; i < objects.size(); i++) {
-    objects[i]->Integrate(delta);
+    objects[i]->Integrate(delta, gravity);
   }
 
   // Check for collisions
