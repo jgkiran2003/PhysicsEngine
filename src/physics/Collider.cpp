@@ -5,7 +5,6 @@
 #include <iostream>
 
 CollisionData Collider::Intersect(const Collider& other) const {
-  // Check if both objects are spheres
   if (type == TYPE_SPHERE && other.GetType() == TYPE_SPHERE) {
     BoundingSphere* self = (BoundingSphere*)this;
     return self->IntersectSphere((BoundingSphere&)other);
@@ -13,7 +12,8 @@ CollisionData Collider::Intersect(const Collider& other) const {
 
   if (type == TYPE_SPHERE && other.GetType() == TYPE_PLANE) {
     BoundingSphere* self = (BoundingSphere*)this;
-    return ((Plane&)other).IntersectSphere(*self);
+    CollisionData data = ((Plane&)other).IntersectSphere(*self);
+    return CollisionData(data.DoesInteract(), data.GetDirection() * -1.0f, data.GetDistance());
   }
 
   if (type == TYPE_PLANE && other.GetType() == TYPE_SPHERE) {
