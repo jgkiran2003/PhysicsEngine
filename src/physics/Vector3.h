@@ -24,7 +24,7 @@ class Vector3 {
     // Returns normalised vector
     Vector3 Normalized() const {
         float len = Length();
-        if (len == 0) return Vector3(0, 0); // Prevent division by zero
+        if (len == 0) return Vector3(0.0f, 0.0f, 0.0f); // Prevent division by zero
         return Vector3(x / len, y / len, z / len);
     }
 
