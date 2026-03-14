@@ -25,6 +25,11 @@ class PhysicsObject {
     // Movement
     void Integrate(float delta);
 
+    void Translate(const Vector3& offset) {
+      collider->Transform(offset);
+    }
+
+    // Force
     void AddForce(const Vector3& force) {
       forceAccumulator = forceAccumulator + force;
     }

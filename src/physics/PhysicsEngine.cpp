@@ -30,8 +30,8 @@ void PhysicsEngine::Simulate(float delta) {
       // Resolve collision
       if (collisionData.DoesInteract()) {
         // Positional correction
-        objects[i]->GetCollider().Transform(collisionData.GetDirection() * -collisionData.GetDistance());
-        objects[j]->GetCollider().Transform(collisionData.GetDirection() * collisionData.GetDistance());
+        objects[i]->Translate(collisionData.GetDirection() * -collisionData.GetDistance());
+        objects[j]->Translate(collisionData.GetDirection() * collisionData.GetDistance());
 
         // Direction of normal force acting on object j
         Vector3 normal = collisionData.GetDirection().Normalized();
