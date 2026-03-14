@@ -6,6 +6,10 @@
 
 class PhysicsEngine {
 public:
+  ~PhysicsEngine() {
+    for (auto* obj : objects) delete obj;
+  }
+  
   // List of every object in the world
   std::vector<PhysicsObject*> objects;
 
