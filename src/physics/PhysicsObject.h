@@ -26,6 +26,7 @@ class PhysicsObject {
     void Integrate(float delta, const Vector3& globalAcceleration);
 
     void Translate(const Vector3& offset) {
+      if (inverseMass == 0.0f) return;
       collider->Transform(offset);
     }
 
