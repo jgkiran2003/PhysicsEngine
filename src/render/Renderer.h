@@ -36,6 +36,8 @@ private:
     // Helper to draw 3d sphere
     void DrawSimplePoint(const Vector3& pos, float size);
 
+    void DrawAABB(const Vector3& min, const Vector3& max);
+
     void DrawBoxSimple();
 
     void DrawGrid();

@@ -3,6 +3,7 @@
 #include "physics/PhysicsEngine.h"
 #include "physics/BoundingSphere.h"
 #include "physics/Plane.h"
+#include "physics/AABB.h"
 #include "render/Renderer.h"
 
 int main(int argc, char* argv[]) {
@@ -17,6 +18,10 @@ int main(int argc, char* argv[]) {
   engine.AddObject(new PhysicsObject(new Plane(Vector3(0, 1, 0), 300), Vector3(0, 0, 0), 0.0f));  // Ceiling
   engine.AddObject(new PhysicsObject(new Plane(Vector3(0, 0, 1), -400), Vector3(0, 0, 0), 0.0f)); // Back
   engine.AddObject(new PhysicsObject(new Plane(Vector3(0, 0, 1), 400), Vector3(0, 0, 0), 0.0f));  // Front
+
+  // Add two AABB boxes
+  engine.AddObject(new PhysicsObject(new AABB(Vector3(-50, -50, -50), Vector3(50, 50, 50)), Vector3(0, 0, 0), 0.0f));
+  engine.AddObject(new PhysicsObject(new AABB(Vector3(100, 100, 100), Vector3(150, 150, 150)), Vector3(0, 0, 0), 0.0f));
 
   // 50 particles randomly generated within box
   for(int i = 0; i < 50; i++) {
@@ -37,17 +42,6 @@ int main(int argc, char* argv[]) {
     BoundingSphere* particleShape = new BoundingSphere(Vector3(startX, startY, startZ), 5.0f);
     engine.AddObject(new PhysicsObject(particleShape, Vector3(velX, velY, velZ), mass));
   }
-
-  // // TESTING
-  // // Ball 1: Stationary in the middle
-  // PhysicsObject* target = new PhysicsObject(new BoundingSphere(Vector3(-100, 0, 0), 10), Vector3(0, 0, 0), 10.0f);
-
-  // // Ball 2: Moving from the left, but slightly "higher" than the target
-  // // Offset the Y by 15 pixels so they hit on their edges
-  // PhysicsObject* bullet = new PhysicsObject(new BoundingSphere(Vector3(100, 0, 0), 5), Vector3(-10, 0, 0), 1.0f);
-
-  // engine.AddObject(target);
-  // engine.AddObject(bullet);
 
   // Main loop
   float timeStep = 0.1f;

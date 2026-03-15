@@ -1,6 +1,7 @@
 #include "Renderer.h"
 #include "physics/PhysicsObject.h"
 #include "physics/BoundingSphere.h"
+#include "physics/AABB.h"
 #include "physics/Plane.h"
 #include "physics/Vector3.h"
 
@@ -76,7 +77,14 @@ void Renderer::Render3D(const std::vector<PhysicsObject*>& objects) {
 
     if (col.GetType() == Collider::TYPE_SPHERE) {
       float r = ((BoundingSphere&)col).GetRadius();
+      // Spheres are white
+      glColor3f(1.0f, 1.0f, 1.0f);
       DrawSimplePoint(pos, r);
+    } else if (col.GetType() == Collider::TYPE_AABB) {
+      AABB& aabb = (AABB&)col;
+      // AABBs are green
+      glColor3f(0.0f, 1.0f, 0.0f);
+      DrawAABB(aabb.GetMin() + camera_offset, aabb.GetMax() + camera_offset);
     }
   }
 
@@ -115,9 +123,35 @@ void Renderer::HandleEvents() {
 void Renderer::DrawSimplePoint(const Vector3& pos, float size) {
     glPointSize(size); // Set size BEFORE glBegin
     glBegin(GL_POINTS);
-    glColor3f(1.0f, 1.0f, 1.0f);
     glVertex3f(pos.x, pos.y, pos.z); 
     glEnd();
+}
+
+void Renderer::DrawAABB(const Vector3& min, const Vector3& max) {
+    // Draw wireframe box
+    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+    glLineWidth(2.0f);
+    glBegin(GL_QUADS);
+      // Front
+      glVertex3f(min.x, min.y, min.z); glVertex3f(max.x, min.y, min.z); 
+      glVertex3f(max.x, max.y, min.z); glVertex3f(min.x, max.y, min.z);
+      // Back
+      glVertex3f(min.x, min.y, max.z); glVertex3f(max.x, min.y, max.z); 
+      glVertex3f(max.x, max.y, max.z); glVertex3f(min.x, max.y, max.z);
+      // Left
+      glVertex3f(min.x, min.y, min.z); glVertex3f(min.x, min.y, max.z); 
+      glVertex3f(min.x, max.y, max.z); glVertex3f(min.x, max.y, min.z);
+      // Right
+      glVertex3f(max.x, min.y, min.z); glVertex3f(max.x, min.y, max.z); 
+      glVertex3f(max.x, max.y, max.z); glVertex3f(max.x, max.y, min.z);
+      // Top
+      glVertex3f(min.x, min.y, min.z); glVertex3f(max.x, min.y, min.z); 
+      glVertex3f(max.x, min.y, max.z); glVertex3f(min.x, min.y, max.z);
+      // Bottom
+      glVertex3f(min.x, max.y, min.z); glVertex3f(max.x, max.y, min.z); 
+      glVertex3f(max.x, max.y, max.z); glVertex3f(min.x, max.y, max.z);
+    glEnd();
+    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 }
 
 void Renderer::DrawBoxSimple() {

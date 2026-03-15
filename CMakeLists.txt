@@ -16,6 +16,7 @@ set(SOURCES
     src/physics/PhysicsObject.cpp 
     src/physics/PhysicsEngine.cpp
     src/physics/Collider.cpp
+    src/physics/AABB.cpp
     src/physics/BoundingSphere.cpp
     src/physics/Plane.cpp
 )
