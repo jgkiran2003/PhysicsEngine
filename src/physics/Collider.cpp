@@ -43,7 +43,8 @@ CollisionData Collider::Intersect(const Collider& other) const {
     }
 
     if (other.GetType() == TYPE_AABB) {
-      return CollisionData(false);
+      CollisionData data = ((AABB&)other).IntersectPlane(*self);
+      return Flip(data);
     }
   }
 
@@ -56,7 +57,7 @@ CollisionData Collider::Intersect(const Collider& other) const {
     }
 
     if (other.GetType() == TYPE_PLANE) {
-      return CollisionData(false);
+      return self->IntersectPlane((Plane&)other);
     }
 
     if (other.GetType() == TYPE_AABB) {

@@ -4,6 +4,7 @@
 #include "Collider.h"
 #include "Vector3.h"
 #include "BoundingSphere.h"
+#include "Plane.h"
 
 class AABB: public Collider {
   // Axis-Aligned Bounding Box (AABB) for efficient collision calculation
@@ -15,6 +16,7 @@ class AABB: public Collider {
 
     CollisionData IntersectAABB(const AABB& other) const;
     CollisionData IntersectSphere(const BoundingSphere& sphere) const;
+    CollisionData IntersectPlane(const Plane& plane) const;
 
     void Transform(const Vector3& t) override { min = min + t; max = max + t; }
     Vector3 GetCenter() const override { return (min + max) * 0.5f; }

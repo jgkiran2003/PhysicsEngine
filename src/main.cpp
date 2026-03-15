@@ -21,7 +21,7 @@ int main(int argc, char* argv[]) {
 
   // Add two AABB boxes
   engine.AddObject(new PhysicsObject(new AABB(Vector3(-50, -50, -50), Vector3(50, 50, 50)), Vector3(0, 0, 0), 0.0f));
-  engine.AddObject(new PhysicsObject(new AABB(Vector3(100, 100, 100), Vector3(150, 150, 150)), Vector3(0, 0, 0), 0.0f));
+  engine.AddObject(new PhysicsObject(new AABB(Vector3(100, 100, 100), Vector3(150, 150, 150)), Vector3(10.0, 5.0, 0), 1.0f));
 
   // 50 particles randomly generated within box
   for(int i = 0; i < 50; i++) {
