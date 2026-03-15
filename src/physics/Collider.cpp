@@ -4,25 +4,36 @@
 #include "Plane.h"
 #include <iostream>
 
+static CollisionData Flip(const CollisionData& data) {
+  if (!data.DoesInteract()) return data;
+  return CollisionData(true, data.GetDirection() * -1.0f, data.GetDistance());
+}
+
 CollisionData Collider::Intersect(const Collider& other) const {
-  if (type == TYPE_SPHERE && other.GetType() == TYPE_SPHERE) {
-    BoundingSphere* self = (BoundingSphere*)this;
-    return self->IntersectSphere((BoundingSphere&)other);
+  // Spheres
+  if (type == TYPE_SPHERE) {
+    if (other.GetType() == TYPE_SPHERE) {
+      BoundingSphere* self = (BoundingSphere*)this;
+      return self->IntersectSphere((BoundingSphere&)other);
+    }
+
+    if (other.GetType() == TYPE_PLANE) {
+      BoundingSphere* self = (BoundingSphere*)this;
+      CollisionData data = ((Plane&)other).IntersectSphere(*self);
+      return Flip(data);
+    }
   }
 
-  if (type == TYPE_SPHERE && other.GetType() == TYPE_PLANE) {
-    BoundingSphere* self = (BoundingSphere*)this;
-    CollisionData data = ((Plane&)other).IntersectSphere(*self);
-    return CollisionData(data.DoesInteract(), data.GetDirection() * -1.0f, data.GetDistance());
-  }
+  // Plane
+  if (type == TYPE_PLANE) {
+    if (other.GetType() == TYPE_SPHERE) {
+      Plane* self = (Plane*)this;
+      return self->IntersectSphere((BoundingSphere&)other);
+    }
 
-  if (type == TYPE_PLANE && other.GetType() == TYPE_SPHERE) {
-    Plane* self = (Plane*)this;
-    return self->IntersectSphere((BoundingSphere&)other);
-  }
-
-  if (type == TYPE_PLANE && other.GetType() == TYPE_PLANE) {
-    return CollisionData(false);
+    if (other.GetType() == TYPE_PLANE) {
+      return CollisionData(false);
+    }
   }
 
 
